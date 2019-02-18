@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>keybridge.lib</groupId>
+  <artifactId>mavenator</artifactId>
+  <version>0.1.0</version>
+  <packaging>jar</packaging>
+
+  <name>lib-mavenator</name>
+  <description>Application dependency and license introspection tools
+
+    A collection of tools for Maven projects
+
+    History:
+    v0.0.1 - initial version
+    v0.1.0 - beta release
+
+  </description>
+
+  <organization>
+    <name>Key Bridge</name>
+    <url>http://keybridge.ch</url>
+  </organization>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.4</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.1.1</version>
+        <executions>
+          <execution>
+            <configuration>
+              <outputFile>${project.build.directory}/classes/META-INF/build/dependency-tree.txt</outputFile>
+            </configuration>
+            <phase>compile</phase>
+            <goals>
+              <goal>tree</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <configuration>
+              <licensesOutputDirectory>${project.build.directory}/classes/META-INF/build/licenses</licensesOutputDirectory>
+              <licensesOutputFile>${project.build.directory}/classes/META-INF/build/licenses.xml</licensesOutputFile>
+            </configuration>
+            <phase>compile</phase>
+            <goals>
+              <goal>download-licenses</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <distributionManagement>
+    <repository>
+      <id>${repository.name}</id>
+      <url>${repository.url}</url>
+    </repository>
+  </distributionManagement>
+
+</project>

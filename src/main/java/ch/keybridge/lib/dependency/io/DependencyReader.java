@@ -12,14 +12,15 @@ import java.util.List;
 
 /**
  * Utilities for reading output files created by the maven dependency:tree goal.
+ *
  * @author Andrius Druzinis-Vitkus
  * @since 0.0.1 created 2019-02-07
  */
 public class DependencyReader {
 
   /**
-   * Remove leading tree-like characters from single line of output from maven dependency:tree, e.g.
-   *
+   * Remove leading tree-like characters from single line of output from maven
+   * dependency:tree, e.g.
    * <pre>
    * keybridge.application:web-cbrs-boundary:war:1.5.0
    * +- keybridge.faces:faces-common:jar:4.0.0:compile
@@ -36,6 +37,7 @@ public class DependencyReader {
    * |  \- keybridge.lib:wadl:jar:1.0.0:compile
    * </pre>
    *
+   * @param line the line string
    * @return a clean string containing the dependency information
    */
   public static String trimLine(String line) {
@@ -43,9 +45,11 @@ public class DependencyReader {
   }
 
   /**
-   * Parse a Maven artifact in the form {groupId}:{artifactId}:{packaging}:{version}
-   * or {groupId}:{artifactId}:{version}, e.g.:
+   * Parse a Maven artifact in the form
+   * {groupId}:{artifactId}:{packaging}:{version} or
+   * {groupId}:{artifactId}:{version}, e.g.:
    * <pre>keybridge.lib:wadl:jar:1.0.0</pre>
+   *
    * @param line Maven artifact string
    * @return parsed MavenArtifact object.
    */
@@ -62,8 +66,10 @@ public class DependencyReader {
   }
 
   /**
-   * Parse a Maven dependency in the form {groupId}:{artifactId}:{packaging}:{version}:{scope}, e.g.:
+   * Parse a Maven dependency in the form
+   * {groupId}:{artifactId}:{packaging}:{version}:{scope}, e.g.:
    * <pre>keybridge.lib:wadl:jar:1.0.0</pre>
+   *
    * @param line Maven artifact string
    * @return parsed MavenArtifact object.
    */
@@ -77,26 +83,33 @@ public class DependencyReader {
   }
 
   /**
-   * Parse the indentation level from a single line of output of the Maven dependency:tree goal.
-   *
+   * Parse the indentation level from a single line of output of the Maven
+   * dependency:tree goal.
    * <pre>
-   * keybridge.application:web-cbrs-boundary:war:1.5.0                                -> 0
-   * +- keybridge.faces:faces-common:jar:4.0.0:compile                                -> 1
-   * |  +- org.primefaces:primefaces:jar:6.2:compile                                  -> 2
-   * |  +- org.ocpsoft.prettytime:prettytime-integration-jsf:jar:4.0.1.Final:compile  -> 2
-   * |  |  \- org.ocpsoft.prettytime:prettytime:jar:4.0.1.Final:compile               -> 3
+   * keybridge.application:web-cbrs-boundary:war:1.5.0                                - 0
+   * +- keybridge.faces:faces-common:jar:4.0.0:compile                                - 1
+   * |  +- org.primefaces:primefaces:jar:6.2:compile                                  - 2
+   * |  +- org.ocpsoft.prettytime:prettytime-integration-jsf:jar:4.0.1.Final:compile  - 2
+   * |  |  \- org.ocpsoft.prettytime:prettytime:jar:4.0.1.Final:compile               - 3
    * </pre>
+   *
    * @param line a single line of output of the Maven dependency:tree goal
    * @return line indent
    */
   public static int getIndent(String line) {
-    if (line == null || line.isEmpty()) throw new IllegalArgumentException("Empty string");
+    if (line == null || line.isEmpty()) {
+      throw new IllegalArgumentException("Empty string");
+    }
     int idx = 0;
     while (true) {
       char c = line.charAt(idx++);
-      if (!(c <= ' ' || c == '+' || c == '-' || c == '\\' || c == '|')) break;
+      if (!(c <= ' ' || c == '+' || c == '-' || c == '\\' || c == '|')) {
+        break;
+      }
     }
-    if ((idx - 1) % 3 != 0) throw new IllegalStateException();
+    if ((idx - 1) % 3 != 0) {
+      throw new IllegalStateException();
+    }
     return (idx - 1) / 3;
   }
 
@@ -117,6 +130,7 @@ public class DependencyReader {
    * |  +- com.vladsch.flexmark:flexmark-ext-macros:jar:0.40.4:compile
    * |  \- keybridge.lib:wadl:jar:1.0.0:compile
    * </pre>
+   *
    * @param dependencyTree path to the dependency:tree output
    * @return parsed dependency hierarchy
    * @throws IOException in case of failure to read input file.

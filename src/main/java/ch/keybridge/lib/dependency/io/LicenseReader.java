@@ -21,8 +21,8 @@ public class LicenseReader {
    *
    * @param file path to the licenses XML file.
    * @return parsed file content
-   * @throws IOException
-   * @throws JAXBException
+   * @throws IOException   on read error
+   * @throws JAXBException on parse error
    */
   public static LicenseSummary read(Path file) throws IOException, JAXBException {
     JAXBContext jaxbContext = JAXBContext.newInstance(LicenseSummary.class);

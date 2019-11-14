@@ -15,13 +15,14 @@ import javax.xml.bind.JAXBException;
 
 /**
  * The main entry point to the library.
- *
+ * <p>
  * Has default paths of data files pre-specified.
  *
  * @author Andrius Druzinis-Vitkus
  * @since 0.0.1 created 2019-02-05
  */
 public class AppMetadata {
+
   public static final String DEPENDENCY_FILE = "META-INF/build/dependency-tree.txt";
   public static final String LICENSE_FILE = "META-INF/build/licenses.xml";
   public static final String LICENSES_DIR = "META-INF/build/licenses/";
@@ -31,8 +32,9 @@ public class AppMetadata {
 
   /**
    * Get an instance with pre-loaded dependency and license lists.
+   *
    * @return a new AppMetadata instance
-   * @throws IOException
+   * @throws IOException on error
    */
   public static AppMetadata getInstance() throws IOException {
     AppMetadata appMetadata = new AppMetadata();
@@ -44,7 +46,9 @@ public class AppMetadata {
   }
 
   /**
-   * Get the Maven artifact for the application itself. Can be used to get the application version.
+   * Get the Maven artifact for the application itself. Can be used to get the
+   * application version.
+   *
    * @return MavenArtifact for the application itself.
    */
   public MavenArtifact getApplicationArtifact() {
@@ -53,6 +57,7 @@ public class AppMetadata {
 
   /**
    * Get the dependency tree.
+   *
    * @return dependency tree.
    */
   public MavenDependency getDependencyHierarchy() {
@@ -61,6 +66,7 @@ public class AppMetadata {
 
   /**
    * Get all dependencies (including transitive ones) in a list.
+   *
    * @return collection of all dependencies.
    */
   public Collection<MavenDependency> getDependencies() {
@@ -73,6 +79,7 @@ public class AppMetadata {
 
   /**
    * Resolve the path to the content of a License
+   *
    * @param license a non-null license instance
    * @return a valid path, if specified
    * @throws IOException in case of failure to create path.
@@ -83,6 +90,7 @@ public class AppMetadata {
 
   /**
    * Load the dependency hierarchy file.
+   *
    * @throws IOException in case of failure to find or read the file
    */
   private void loadDependencyData() throws IOException {
@@ -92,6 +100,7 @@ public class AppMetadata {
 
   /**
    * Load the license file.
+   *
    * @throws IOException in case of failure to find or read the file
    */
   private void loadLicenseData() throws IOException {
@@ -99,13 +108,13 @@ public class AppMetadata {
 
     try {
       /**
-       * Read license information into a map of
-       * groupId:artifactId:version to List-of-licenses.
+       * Read license information into a map of groupId:artifactId:version to
+       * List-of-licenses.
        */
       LicenseSummary summary = LicenseReader.read(licensePath);
       Map<String, List<License>> licenseMap = summary.getDependencies().stream()
-          .collect(Collectors.toMap(LicenseSummary.Dependency::getVersionedArtifactName,
-              LicenseSummary.Dependency::getLicenses));
+        .collect(Collectors.toMap(LicenseSummary.Dependency::getVersionedArtifactName,
+                                  LicenseSummary.Dependency::getLicenses));
 
       /**
        * Map licenses to our actual artifacts.
